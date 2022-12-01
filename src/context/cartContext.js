@@ -4,14 +4,14 @@ import { insertProduct, removeProduct, removeAllProducts, insertPurchase } from 
 const CartContext = createContext({});
 export const CartContextProvider = ({ products, children }) => {
     const [carrito, setCarrito] = useState(products)
-    
+
     useEffect(() => {
         setCarrito(products)
     }, [products])
 
     const addProduct = async (product, quantity) => {
         //agregar una cantidad de un articulo
-        const producto = {id:product.id, titulo:product.titulo, foto:product.foto, precio:product.precio, cantidad:quantity}
+        const producto = { id: product.id, titulo: product.titulo, foto: product.foto, precio: product.precio, cantidad: quantity }
         //const id = await insertProduct(producto)
         const _carrito = products.concat(producto)
         setCarrito(_carrito)
@@ -20,18 +20,18 @@ export const CartContextProvider = ({ products, children }) => {
     const deleteProduct = async (ProductId) => {
         //remover un articulo 
         const _carrito = products.filter((el, i) => i !== ProductId);
-        try{
+        try {
             await removeProduct(ProductId)
             //removeProduct(products[ProductId].id)
-             setCarrito(_carrito)
-        }catch{}
+            setCarrito(_carrito)
+        } catch { }
     }
-    
+
     const clear = () => {
         //remover todos los articulos
-        const products_ = products.map((product) => ({...product}))
+        const products_ = products.map((product) => ({ ...product }))
         removeAllProducts(products_)
-      /*   const _carrito = {} */
+        /*   const _carrito = {} */
         setCarrito(products_)
     }
 
@@ -41,15 +41,16 @@ export const CartContextProvider = ({ products, children }) => {
     }
 
     const totalAmount = () => {
-        const total = products.map(item => item.precio*item.cantidad).reduce((prev, curr) => prev + curr, 0);
+        const total = products.map(item => item.precio * item.cantidad).reduce((prev, curr) => prev + curr, 0);
         return total
     }
 
     const addPurchase = async (products) => {
-        const carrito = {id:1, 
-                        detalle:{products}
-                    }
-       // const id = await insertPurchase(carrito)
+        const carrito = {
+            id: 1,
+            detalle: { products }
+        }
+        // const id = await insertPurchase(carrito)
         const _carrito = {}
         setCarrito(_carrito)
     }
